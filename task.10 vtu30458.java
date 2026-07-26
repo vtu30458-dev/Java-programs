@@ -1,0 +1,22 @@
+import java.util.Scanner;
+
+public class LastDigitSum {
+    public static void main(String[] args) {
+        Scanner sc=new Scanner(System.in);
+
+        System.out.print("Enter first number: ");
+        int a=sc.nextInt();
+
+        System.out.print("Enter second number: ");
+        int b=sc.nextInt();
+
+        int sum=(a%10)+(b%10);
+
+        System.out.println("Sum of last digits = "+sum);
+    }
+}
+
+OUTPUT:
+Enter first number: 5
+Enter second number: 5
+Sum of last digits = 10
