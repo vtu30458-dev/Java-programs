@@ -1,0 +1,119 @@
+import java.io.*;
+import java.math.*;
+import java.security.*;
+import java.text.*;
+import java.util.*;
+import java.util.concurrent.*;
+import java.util.regex.*;
+
+class Result {
+
+    /*
+     * Complete the 'circularPalindromes' function below.
+     *
+     * The function is expected to return an INTEGER_ARRAY.
+     * The function accepts STRING s as parameter.
+     */
+
+    public static List<Integer> circularPalindromes(String s) {
+
+        int n = s.length();
+        List<Integer> result = new ArrayList<>();
+
+        // Create doubled string to handle circular rotations
+        String doubled = s + s;
+
+        for (int start = 0; start < n; start++) {
+
+            int maxLength = 1;
+
+            /*
+             * Consider every possible substring of length <= n
+             * starting from 'start'.
+             */
+            for (int center = start; center < start + n; center++) {
+
+                // Odd length palindrome
+                int len1 = expand(doubled, center, center, start, start + n - 1);
+
+                // Even length palindrome
+                int len2 = expand(doubled, center, center + 1,
+                                  start, start + n - 1);
+
+                maxLength = Math.max(maxLength, Math.max(len1, len2));
+            }
+
+            result.add(maxLength);
+        }
+
+        return result;
+    }
+
+    /*
+     * Expands around the given center while making sure
+     * that the palindrome stays within the current rotation.
+     */
+    private static int expand(String s, int left, int right,
+                              int min, int max) {
+
+        while (left >= min &&
+               right <= max &&
+               s.charAt(left) == s.charAt(right)) {
+
+            left--;
+            right++;
+        }
+
+        return right - left - 1;
+    }
+}
+
+public class Solution {
+
+    public static void main(String[] args) throws IOException {
+
+        BufferedReader bufferedReader =
+            new BufferedReader(new InputStreamReader(System.in));
+
+        BufferedWriter bufferedWriter =
+            new BufferedWriter(new FileWriter(System.getenv("OUTPUT_PATH")));
+
+        int n = Integer.parseInt(bufferedReader.readLine().trim());
+
+        String s = bufferedReader.readLine();
+
+        List<Integer> result = Result.circularPalindromes(s);
+
+        for (int i = 0; i < result.size(); i++) {
+
+            bufferedWriter.write(String.valueOf(result.get(i)));
+
+            if (i != result.size() - 1) {
+                bufferedWriter.write("\n");
+            }
+        }
+
+        bufferedWriter.newLine();
+
+        bufferedReader.close();
+        bufferedWriter.close();
+    }
+}
+
+Output:
+13
+aaaaabbbbaaaa
+
+12
+12
+10
+8
+8
+9
+11
+13
+11
+9
+8
+8
+10
